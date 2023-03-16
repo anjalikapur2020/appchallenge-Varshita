@@ -52,6 +52,12 @@ level3bg=loadImage("assets/level3img.jpg")
 missileimg = loadImage("assets/shoot/missile.png")
 shipshootimg=loadImage("assets/spaceshipshoot.png")
 destroyimg=loadAnimation("assets/shoot/b1.png","assets/shoot/b2.png","assets/shoot/b3.png","assets/shoot/b4.png","assets/shoot/b5.png")
+
+// load sounds
+backgroundmusic = loadSound("assets/bgmusic.mp3")
+hitsoundlevel2=loadSound("assets/bullethit.mp3")
+collectsoundlevel1 =loadSound("assets/collect.mp3")
+
 }
 
 function setup() {
@@ -206,6 +212,11 @@ missileGroup = new Group
 }
 
 function draw() {
+
+    if(!backgroundmusic.isPlaying()){
+        backgroundmusic.play()
+        backgroundmusic.setVolume(.05)
+    }
     player.collide(invisibleGround)
     if (gameState === "wait") {
       
@@ -318,6 +329,7 @@ function draw() {
 
         if (player.isTouching(dog)) {
             dog.changeImage("awake")
+            collectsoundlevel1.play()
             dog.scale = .3
             // dog.tint = ""
             map.visible = true
@@ -327,6 +339,7 @@ function draw() {
 
         }
         if (player.isTouching(map)) {
+            collectsoundlevel1.play()
 
             dog.destroy()
             dogcollect.visible = true
@@ -338,6 +351,7 @@ function draw() {
 
 
         if (player.isTouching(spaceshuttle)) {
+            collectsoundlevel1.play()
 
             map.destroy()
             dogcollect.visible = true
@@ -350,6 +364,7 @@ function draw() {
 
 
         if (player.isTouching(spacesuit)) {
+            collectsoundlevel1.play()
 
             spaceshuttle.destroy()
             dogcollect.visible = true
@@ -472,6 +487,7 @@ function keyPressed() {
 
     if(keyCode === 32 ){
        spawnmissiles()
+       hitsoundlevel2.play()
        shipshoot.depth=missile.depth
        missile.depth=missile.depth+1
        shipshoot.depth=shipshoot.depth-1
